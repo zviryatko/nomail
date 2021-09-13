@@ -8,6 +8,9 @@ Just a test implementation of SMTP protocol with PHP without any native sendmail
 git clone ...
 cp .env.dist .env
 docker-compose up -d
+docker-compose exec php ash
+composer install
+exit
 open http://nomail.docker.localhost
 open http://mailhog.nomail.docker.localhost
 ```
