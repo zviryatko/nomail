@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  php:
+    image: php:7.4-alpine
+    container_name: "${PROJECT_NAME}_php"
+    #command: 'php -d zend_extension=/src/xdebug.so -dxdebug.mode=debug -dxdebug.client_host=172.17.0.1 -dxdebug.client_port=9000 -S 0.0.0.0:80 -t /src/web /src/web/router.php'
+    command: 'php -S 0.0.0.0:80 -t /src/web /src/web/router.php'
+    working_dir: /src
+    ports:
+      - 80
+    volumes:
+      - ./:/src
+    labels:
+      - "traefik.http.services.${PROJECT_NAME}_php.loadbalancer.server.port=80"
+      - "traefik.http.routers.${PROJECT_NAME}_php.rule=Host(`${PROJECT_BASE_URL}`)"
+    environment:
+      - SMTP_ADDRESS=${SMTP_ADDRESS}
+      - SMTP_PORT=${SMTP_PORT}
+      - PROJECT_NAME=${PROJECT_NAME}
+      - PROJECT_BASE_URL=${PROJECT_BASE_URL}
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: "${PROJECT_NAME}_mailhog"
+    labels:
+      - "traefik.http.services.${PROJECT_NAME}_mailhog.loadbalancer.server.port=8025"
+      - "traefik.http.routers.${PROJECT_NAME}_mailhog.rule=Host(`mailhog.${PROJECT_BASE_URL}`)"
+
+  traefik:
+    image: traefik:v2.0
+    command: --api.insecure=true --providers.docker
+    ports:
+      - 80
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

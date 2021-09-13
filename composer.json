@@ -1,0 +1,41 @@
+{
+    "name": "zviryatko/nomail",
+    "description": "Try to send mail without mail().",
+    "type": "library",
+    "license": "GPLv3",
+    "authors": [
+        {
+            "name": "Alex Davyskiba",
+            "email": "sanya.davyskiba@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "zviryatko\\nomail\\": "./src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "zviryatko\\nomail\\tests\\": "./tests"
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
+    "require": {
+        "bower-asset/bootstrap": "^5",
+        "oomphinc/composer-installers-extender": "dev-master",
+        "ext-mbstring": "*",
+        "bower-asset/tinymce": "^5.7"
+    },
+    "extra": {
+        "installer-types": ["bower-asset", "npm-asset"],
+        "installer-paths": {
+            "web/assets/{$vendor}/{$name}/": ["type:bower-asset", "type:npm-asset"]
+        }
+    }
+}
